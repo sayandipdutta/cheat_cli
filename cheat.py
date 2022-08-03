@@ -27,13 +27,14 @@ def load_args() -> argparse.Namespace:
     options = Cheat.options
     search_opts = Cheat.search_opts
     parser = argparse.ArgumentParser(description="Search cheat.sh")
+    group = parser.add_mutually_exclusive_group()
     add_args = parser.add_argument
     add_args("topic", metavar="L", help="The topic to search for.")
-    add_args("subtopic", metavar="q", help="Search string")
-    add_args("-c", "--cmd", choices=cmds, help=f"One of the following commands: {', '.join(cmds)}")
-    add_args("-k", "--kwd", help="Keywords", nargs='*')
+    group.add_argument("-s", "--subtopic", metavar="q", help="Search string")
+    group.add_argument("-k", "--kwd", help="Keywords", nargs='*')
+    group.add_argument("-c", "--cmd", choices=cmds, help=f"One of the following commands: {', '.join(cmds)}")
     add_args("-o", "--options", nargs='*', choices=options)
-    add_args("-s", "--style")
+    add_args("--style")
     add_args("--search_opts", nargs=True, choices=search_opts)
 
     args = parser.parse_args()
@@ -42,7 +43,7 @@ def load_args() -> argparse.Namespace:
 def generate_query() -> str:
     args = load_args()
     topic = "/"+ "+".join(args.topic.strip().split())
-    subtopic = '/' + "+".join(args.subtopic.strip().split()) 
+    subtopic = '/' + "+".join(args.subtopic.strip().split()) if args.subtopic else ""
     cmd = '/:%s' % args.cmd if args.cmd else ''
     opts = ("?"+"".join(args.options)) if args.options else ""
     style = ("&style=%s" % args.style) if args.style else ""
