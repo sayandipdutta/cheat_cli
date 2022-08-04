@@ -46,14 +46,14 @@ class Cheat:
 
     @staticmethod
     def format_args(
-            topic: str = "",
+            topic: str = None,
             *,
             subtopic: str = None,
+            kwd: list[str] = None,
             cmd: Commands = None,
             options: list[Options] = None,
             style: str = None,
             search_opts: list[SearchOpts] = None,
-            kwd: list[str] = None
             ) -> tuple[list[str], str]:
         """
         Format arguments as per cheat.sh requirement.
