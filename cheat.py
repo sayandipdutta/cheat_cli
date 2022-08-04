@@ -32,7 +32,7 @@ class Cheat:
         "post",
         "bash_completion",
         "styles",
-        "styles_demo",
+        "styles-demo",
         "random",
     ])
     """set of available commands"""
