@@ -57,6 +57,45 @@ class Cheat:
             ) -> tuple[list[str], str]:
         """
         Format arguments as per cheat.sh requirement.
+
+        Arguments:
+            topic: str (default: None) -> topic to search for.
+            subtopic: str (default: None) -> subtopic to search for. *
+            keywords: list[str] (default: None) -> keyword(s) to search for. *
+            cmd: Commands (default: None) -> One of the following special commands- *
+                "help", "list", "post", "bash_completion", "styles", "styles-demo", "random"
+            options: list[Options] (default: None) -> One of the following options-
+                "q", "T", "Q"
+            style: str (default: None) -> Any style to apply to output.
+            search_opts: list[SearchOpts] -> One of the following search options-
+                "b", "i", "r"
+
+        * NOTE:
+            subtopic, keywords, and, cmd are mutually exclusive. Only one should be provided.
+            If any two are not None, a ValueError is raised.
+
+        Returns:
+                A tuple consisting of list of formated arguments, and the formatted query 
+            to be used to search cheat.sh.
+
+        Example:
+            >>> from cheat import Cheat
+            >>> args, query = Cheat.format_args(
+            ...     "python", kwd=["iter", "next"],
+            ...     cmd="help", options=["Q", "T"]
+            ... )
+            Traceback (most recent call last):
+                ...
+            ValueError: Only one out of subtopic, kwd, and cmd may be provided. Got 2.
+
+            >>> args, query = format_args(
+            ...     "python", kwd=["iter", "next"],
+            ...     options=["Q", "T"], style="bw"
+            ... )
+            >>> args
+            ['/python', '', '/~iter~next', '', '?QT', '&style=bw', '']
+            >>> query
+            '/python/~iter~next?QT&style=bw'
         """
         topic = "/"+ "+".join(topic.strip().split())
         subtopic = '/' + "+".join(subtopic.strip().split()) if subtopic else ""
