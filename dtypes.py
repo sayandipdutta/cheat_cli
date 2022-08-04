@@ -6,7 +6,7 @@ Commands: TypeAlias = Literal[
     "post",
     "bash_completion",
     "styles",
-    "styles_demo",
+    "styles-demo",
     "random"
     ]
 
