@@ -97,7 +97,35 @@ class Cheat:
             >>> query
             '/python/~iter~next?QT&style=bw'
         """
-        topic = "/"+ "+".join(topic.strip().split())
+
+        if (n := sum(arg is not None for arg in [subtopic, kwd, cmd])) > 1:
+            raise ValueError(f"Only one out of subtopic, kwd, and cmd may be provided. Got {n}.")
+
+        if options is not None and (set(options) - Cheat.options):
+            try:
+                raise ValueError("Invalid value for options.")
+            except ValueError as error:
+                note = f"Hint: Try one of {', '.join(Cheat.options)}."
+                error.add_note(note)
+                raise
+
+        if cmd is not None and cmd not in Cheat.commands:
+            try:
+                raise ValueError("Invalid value for cmd.")
+            except ValueError as error:
+                note = f"Hint: Try one of {', '.join(Cheat.commands)}."
+                error.add_note(note)
+                raise
+
+        if search_opts is not None and (set(search_opts) - Cheat.searchopts):
+            try:
+                raise ValueError("Invalid value for search options.")
+            except ValueError as error:
+                note = f"Hint: Try one of {', '.join(Cheat.searchopts)}."
+                error.add_note(note)
+                raise
+
+        topic = ("/"+ "+".join(topic.strip().split())) if topic else ""
         subtopic = '/' + "+".join(subtopic.strip().split()) if subtopic else ""
         cmds = '/:%s' % cmd if cmd else ''
         opts = ("?"+"".join(options)) if options else ""
