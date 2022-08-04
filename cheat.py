@@ -55,6 +55,9 @@ class Cheat:
             search_opts: list[SearchOpts] = None,
             kwd: list[str] = None
             ) -> tuple[list[str], str]:
+        """
+        Format arguments as per cheat.sh requirement.
+        """
         topic = "/"+ "+".join(topic.strip().split())
         subtopic = '/' + "+".join(subtopic.strip().split()) if subtopic else ""
         cmds = '/:%s' % cmd if cmd else ''
