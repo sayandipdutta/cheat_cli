@@ -20,12 +20,11 @@ def load_args() -> argparse.Namespace:
     args = parser.parse_args()
     return args
 
-class AutoName(Enum):
 class _AutoName(str, Enum):
     def _generate_next_value_(name, *_):
         return name
 
-class Commands(str, AutoName):
+class Commands(_AutoName):
     HELP = auto()
     LIST = auto()
     POST = auto()
@@ -34,12 +33,12 @@ class Commands(str, AutoName):
     STYLES_DEMO = auto()
     RANDOM = auto()
 
-class Options(str, AutoName):
+class Options(_AutoName):
     q = auto()
     T = auto()
     Q = auto()
 
-class SearchOpts(str, AutoName):
+class SearchOpts(_AutoName):
     b = auto()
     i = auto()
     r = auto()
