@@ -21,6 +21,7 @@ def load_args() -> argparse.Namespace:
     return args
 
 class AutoName(Enum):
+class _AutoName(str, Enum):
     def _generate_next_value_(name, *_):
         return name
 
