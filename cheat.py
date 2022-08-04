@@ -2,9 +2,13 @@ import argparse
 import subprocess
 from dtypes import Commands, Options, SearchOpts
 
+
 def load_args() -> argparse.Namespace:
     """
     Load arguments from command line.
+
+    Returns:
+        argparse.Namespace object containing all the options.
     """
     parser = argparse.ArgumentParser(description="Search cheat.sh")
     group = parser.add_mutually_exclusive_group()
@@ -20,8 +24,9 @@ def load_args() -> argparse.Namespace:
     args = parser.parse_args()
     return args
 
+
 class Cheat:
-    commands: frozenset[Commands] = frozenset([
+    commands = frozenset[Commands]([
         "help",
         "list",
         "post",
@@ -30,18 +35,19 @@ class Cheat:
         "styles_demo",
         "random",
     ])
-
-    options: frozenset[Options] = frozenset([
+    """set of available commands"""
+    options = frozenset[Options]([
         "q",
         "T",
         "Q",
     ])
-
-    searchopts: frozenset[SearchOpts] = frozenset([
+    """set of available options"""
+    searchopts = frozenset[SearchOpts]([
         "b",
         "i",
         "r",
     ])
+    """set of available searchopts"""
 
 
     @staticmethod
@@ -62,17 +68,19 @@ class Cheat:
             topic: str (default: None) -> topic to search for.
             subtopic: str (default: None) -> subtopic to search for. *
             keywords: list[str] (default: None) -> keyword(s) to search for. *
-            cmd: Commands (default: None) -> One of the following special commands- *
+            cmd: Commands (default: None) -> One of the following special commands- * **
                 "help", "list", "post", "bash_completion", "styles", "styles-demo", "random"
-            options: list[Options] (default: None) -> One of the following options-
+            options: list[Options] (default: None) -> One of the following options- **
                 "q", "T", "Q"
             style: str (default: None) -> Any style to apply to output.
-            search_opts: list[SearchOpts] -> One of the following search options-
+            search_opts: list[SearchOpts] -> One of the following search options- **
                 "b", "i", "r"
 
         * NOTE:
             subtopic, keywords, and, cmd are mutually exclusive. Only one should be provided.
             If any two are not None, a ValueError is raised.
+        ** NOTE:
+            Anything other than the allowed values raise ValueError.
 
         Returns:
                 A tuple consisting of list of formated arguments, and the formatted query 
@@ -99,30 +107,27 @@ class Cheat:
         """
 
         if (n := sum(arg is not None for arg in [subtopic, kwd, cmd])) > 1:
-            raise ValueError(f"Only one out of subtopic, kwd, and cmd may be provided. Got {n}.")
+            raise ValueError(f"Only one out of subtopic, kwd, and, cmd may be provided. Got {n}.")
 
-        if options is not None and (set(options) - Cheat.options):
+        if options is not None and not Cheat.options.issuperset(options):
             try:
                 raise ValueError("Invalid value for options.")
             except ValueError as error:
-                note = f"Hint: Try one of {', '.join(Cheat.options)}."
-                error.add_note(note)
+                error.add_note(f"Hint: Try one of {', '.join(Cheat.options)}.")
                 raise
 
         if cmd is not None and cmd not in Cheat.commands:
             try:
                 raise ValueError("Invalid value for cmd.")
             except ValueError as error:
-                note = f"Hint: Try one of {', '.join(Cheat.commands)}."
-                error.add_note(note)
+                error.add_note(f"Hint: Try one of {', '.join(Cheat.commands)}.")
                 raise
 
-        if search_opts is not None and (set(search_opts) - Cheat.searchopts):
+        if search_opts is not None and not Cheat.searchopts.issuperset(search_opts):
             try:
                 raise ValueError("Invalid value for search options.")
             except ValueError as error:
-                note = f"Hint: Try one of {', '.join(Cheat.searchopts)}."
-                error.add_note(note)
+                error.add_note(f"Hint: Try one of {', '.join(Cheat.searchopts)}.")
                 raise
 
         topic = ("/"+ "+".join(topic.strip().split())) if topic else ""
@@ -140,14 +145,14 @@ class Cheat:
 if __name__ == "__main__":
     args = load_args()
     formatted_args, query = Cheat.format_args(
-            topic=args.topic,
-            subtopic=args.subtopic,
-            cmd=args.cmd,
-            options=args.options,
-            style=args.style,
-            search_opts=args.search_opts,
-            kwd=args.kwd
-        )
+        topic=args.topic,
+        subtopic=args.subtopic,
+        cmd=args.cmd,
+        options=args.options,
+        style=args.style,
+        search_opts=args.search_opts,
+        kwd=args.kwd
+    )
     command = ['curl', f'cht.sh%s' %  query]
     print(args, query, command)
     subprocess.run(command)
