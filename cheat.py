@@ -1,6 +1,6 @@
 import argparse
 import subprocess
-from enum import Enum, auto
+from dtypes import Commands, Options, SearchOpts
 
 def load_args() -> argparse.Namespace:
     """
@@ -12,36 +12,13 @@ def load_args() -> argparse.Namespace:
     add_args("topic", metavar="L", help="The topic to search for.")
     group.add_argument("-s", "--subtopic", metavar="q", help="Search string")
     group.add_argument("-k", "--kwd", help="Keywords", nargs='*')
-    group.add_argument("-c", "--cmd", choices=list(Commands))
-    add_args("-o", "--options", nargs='*', choices=list(Options))
+    group.add_argument("-c", "--cmd", choices=list(Cheat.commands))
+    add_args("-o", "--options", nargs='*', choices=list(Cheat.options))
     add_args("--style")
-    add_args("--search_opts", nargs=True, choices=list(SearchOpts))
+    add_args("--search_opts", nargs=True, choices=list(Cheat.searchopts))
 
     args = parser.parse_args()
     return args
-
-class _AutoName(str, Enum):
-    def _generate_next_value_(name, *_):
-        return name
-
-class Commands(_AutoName):
-    HELP = auto()
-    LIST = auto()
-    POST = auto()
-    BASH_COMPLETION = auto()
-    STYLES = auto()
-    STYLES_DEMO = auto()
-    RANDOM = auto()
-
-class Options(_AutoName):
-    q = auto()
-    T = auto()
-    Q = auto()
-
-class SearchOpts(_AutoName):
-    b = auto()
-    i = auto()
-    r = auto()
 
 class Cheat:
     @staticmethod
