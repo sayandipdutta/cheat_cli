@@ -3,13 +3,16 @@ import subprocess
 from enum import Enum, auto
 
 def load_args() -> argparse.Namespace:
+    """
+    Load arguments from command line.
+    """
     parser = argparse.ArgumentParser(description="Search cheat.sh")
     group = parser.add_mutually_exclusive_group()
     add_args = parser.add_argument
     add_args("topic", metavar="L", help="The topic to search for.")
     group.add_argument("-s", "--subtopic", metavar="q", help="Search string")
     group.add_argument("-k", "--kwd", help="Keywords", nargs='*')
-    group.add_argument("-c", "--cmd", choices=list(Commands), help=f"One of the following commands: {', '.join(Commands)}")
+    group.add_argument("-c", "--cmd", choices=list(Commands))
     add_args("-o", "--options", nargs='*', choices=list(Options))
     add_args("--style")
     add_args("--search_opts", nargs=True, choices=list(SearchOpts))
