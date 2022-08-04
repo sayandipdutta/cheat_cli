@@ -21,6 +21,29 @@ def load_args() -> argparse.Namespace:
     return args
 
 class Cheat:
+    commands: frozenset[Commands] = frozenset([
+        "help",
+        "list",
+        "post",
+        "bash_completion",
+        "styles",
+        "styles_demo",
+        "random",
+    ])
+
+    options: frozenset[Options] = frozenset([
+        "q",
+        "T",
+        "Q",
+    ])
+
+    searchopts: frozenset[SearchOpts] = frozenset([
+        "b",
+        "i",
+        "r",
+    ])
+
+
     @staticmethod
     def format_args(
             topic: str = "",
