@@ -14,7 +14,7 @@ def load_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Search cheat.sh")
     group = parser.add_mutually_exclusive_group()
     add_args = parser.add_argument
-    add_args("topic", metavar="L", help="The topic to search for.")
+    add_args("-t", "--topic", help="The topic to search for.", default="")
     group.add_argument("-s", "--subtopic", metavar="q", help="Search string")
     group.add_argument("-k", "--kwd", help="Keywords", nargs='*')
     group.add_argument("-c", "--cmd", choices=list(Cheat.commands))
