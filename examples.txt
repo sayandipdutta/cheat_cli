@@ -1,0 +1,23 @@
+``kwd``. ``cmd``, and, ``subtopic`` are mutually exclusive.
+Providing value for more than one, will result in ``ValueError``.
+__________________________________________________________________
+    >>> from cheat import Cheat
+    >>> args, query = Cheat.format_args(
+    ...     "python", kwd=["iter", "next"],
+    ...     cmd="help", options=["Q", "T"]
+    ... )
+    Traceback (most recent call last):
+    ...
+    ValueError: Only one out of subtopic, kwd, and, cmd may be provided. Got 2.
+
+This is how the ``args`` and ``query`` look with valid arguments:
+__________________________________________________________________
+    >>> args, query = Cheat.format_args(
+    ...     "python", kwd=["iter", "next"],
+    ...     options=["Q", "T"], style="bw"
+    ... )
+    >>> args
+    ['/python', '', '/~iter~next', '', '?QT', '&style=bw', '']
+    >>> query
+    '/python/~iter~next?QT&style=bw'
+
