@@ -95,9 +95,9 @@ class Cheat:
             ... )
             Traceback (most recent call last):
                 ...
-            ValueError: Only one out of subtopic, kwd, and cmd may be provided. Got 2.
+            ValueError: Only one out of subtopic, kwd, and, cmd may be provided. Got 2.
 
-            >>> args, query = format_args(
+            >>> args, query = Cheat.format_args(
             ...     "python", kwd=["iter", "next"],
             ...     options=["Q", "T"], style="bw"
             ... )
