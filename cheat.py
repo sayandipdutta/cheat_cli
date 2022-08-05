@@ -155,6 +155,6 @@ if __name__ == "__main__":
         kwd=args.kwd
     )
     command = ['curl', f'cht.sh%s' %  query]
-    print(args, query, command)
-    subprocess.run(command)
+    proc = subprocess.run(command, capture_output=True)
+    print(proc.stdout.decode())
     
