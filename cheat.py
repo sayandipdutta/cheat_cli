@@ -1,3 +1,4 @@
+#!/usr/bin/python3.11
 import argparse
 import subprocess
 from dtypes import Commands, Options, SearchOpts
